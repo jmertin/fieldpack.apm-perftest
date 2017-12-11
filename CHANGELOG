@@ -1,0 +1,23 @@
+commit f7c28f5e4228eb0925941b4693265b9de1e3eb4e
+Author: Joerg Mertin <joerg.mertin@ca.com>
+Date:   Mon Dec 11 18:51:30 2017 +0100
+
+    Added user-check and removal of temporary files
+
+commit 04ad484c8008fe7f9cc0477c1e7855b466cf70b2
+Author: Joerg Mertin <joerg.mertin@ca.com>
+Date:   Mon Dec 11 17:41:13 2017 +0100
+
+    Changed shell to be bash.
+
+commit e8230f015cf73d805c1699ba61e8dc3d4078d499
+Author: Joerg Mertin <joerg.mertin@ca.com>
+Date:   Mon Dec 11 17:40:17 2017 +0100
+
+    Updated documentation
+
+commit ae28a2d6a091d2a501994db8df801a58ad448af9
+Author: Joerg Mertin <joerg.mertin@ca.com>
+Date:   Mon Dec 11 17:31:45 2017 +0100
+
+    Initial fieldpack.apm-perftest git commit

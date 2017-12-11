@@ -14,7 +14,8 @@ In IOPing - look for a small variation on I/O Times.
 
 #### Installation
 
-- Download and unpack the apm-perfcheck fieldpack
+- Download and unpack the apm-perfcheck fieldpack on the
+  directory/partition that needs to be tested.
 - Under RedHat/CentOS, install the fio and ioping packages:
 
   `~# sudo yum install fio ioping`
@@ -24,10 +25,8 @@ This should install all dependencies in the process.
 
 #### Usage Instructions
 
-Just run the 
+Just run the run_perftest.sh script as shown below.
 
-After executing `./apm-interact.sh` (_Note the **`./`** in front_), the user
-will be presented with the following CLUI:
 ```
 [merjr01@apm-docker ~]$ tar zxvf apm-perftest.tar.gz 
 apm-perftest/share/apm-share.mod
