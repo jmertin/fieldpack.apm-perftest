@@ -1,8 +1,6 @@
 The apm-perftest script will test the disk-io capability to run the
 APM software under load.
 
-
-
 ## Short Description
 This script will use fio and ioping to determine the current disk I/O
 performance of a system.
@@ -16,101 +14,41 @@ In IOPing - look for a small variation on I/O Times.
 
 #### Installation
 
-
-- Download and unpack the apm-perfcheck fiedlpack
+- Download and unpack the apm-perfcheck fieldpack
 - Under RedHat/CentOS, install the fio and ioping packages:
 
   `~# sudo yum install fio ioping`
 
 This should install all dependencies in the process.
 
-In case the system cannot install files from an external repository,
-check the rhel6/rhel7 directories for pre-build RPM packages.
-Note that the packages can be removed after the test.
-
-
-
-#### Installation
-
-Install the script-collection by unpacking it into a directory of your
-choice, or cloning it through github.
-
-`[caadmin@localhost ~]$ unzip ~/Downloads/fieldpack.apm-scripts-master.zip`
-
-
-#### Configuration
-
-The CLUI will request data if required. Running the script
-`apm-interact.sh` the first time will request optional information as
-Customer Name, contact EMail and Ticket/Case number if existing. This
-data will be written into the resulting data-logfile.
-
-_Note: the data is stored in a text-file inside the same directory and
-sourced to provide defaults on the next execution of the script. This
-is also done for every called subroutine._
 
 #### Usage Instructions
 
-The script provides a command-line interface and tries to guess most
-of the data required itself. In case there are choices or unknown
-elements, the user will have to enter the data interactively
-
-_Note: In case the script does require superuser access, it will ask
-so using sudo prior the subroutine call._
+Just run the 
 
 After executing `./apm-interact.sh` (_Note the **`./`** in front_), the user
 will be presented with the following CLUI:
 ```
-[caadmin@localhost ~]$ cd fieldpack.apm-scripts-master/
-[caadmin@localhost fieldpack.apm-scripts-master]$ ./apm-interact.sh  
-[sudo] password for caadmin:   
- >> Customer Name [CA Test]:  
- >> Name + EMail [demo.user@nodomain.com]:  
- >> Support Ticket Nr. [123456]:  
-One line description of issue: 
-================================================================================  
-health-check data capture
-
-Chose the action to perform  
-================================================================================  
- * CIPHER: Verify cipher compatibility between this TIM and a remote HTTPS Server  
- * EM: Extracts logs on APM EM/MoM  
- * EXIT: Exit data collection  
- * HWCOLL: Collects hardware info for running TIM (RedHat/CentOS only)  
- * PCAP: Generates a packet capture  
- * PHP: Extracts log information on APM PHP Agent  
- * PSQL: Checks PostgreSQL DB status and content  
- * SYS: Performs a system log extraction  
- * TIM: Extracts log information on APM TIM  
- * TIMPERF: Collects performance data on currently running TIM  
-================================================================================  
- >> Choose action: 
+[merjr01@apm-docker ~]$ tar zxvf apm-perftest.tar.gz 
+apm-perftest/share/apm-share.mod
+apm-perftest/.build
+apm-perftest/CHANGELOG
+apm-perftest/README.md
+apm-perftest/run_perftest.sh
+[merjr01@apm-docker ~]$ cd apm-perftest
+[merjr01@apm-docker apm-perftest]$ ./run_perftest.sh 
+Random read/write performance
+fio_test.tmp: (g=0): rw=randrw, bs=4K-4K/4K-4K/4K-4K, ioengine=libaio, iodepth=64
+fio-2.2.8
+Starting 1 process
+...
 ```
-Choose the action to perform: em or EM to extract logs for a EM installation.  
-_Note: The commands are case insensitive. You can also type q or Q to exit._
+A complete log will be dumped in the log-file on the system
 
-Please only execute the data-collection where it makes sense:
-
-| FUNCTION | TIMPERF | TIM | SYS | PSQL | EM | CIPHER | HWCOLL | PCAP |
-|---------:|:-------:|:---:|:---:|:----:|:--:|:------:|:------:|:----:|
-| TIM	   |	X    |  X  |  X  |      |    |   X    |   X    |   X  |
-| MTP 	   |	X    |  X  |  X  |      |    |   X    |   X    |   X  |
-| EM 	   |	     |     |  X  |      |  X |   X    |   X    |      |
-| MoM	   |	     |     |  X  |   X  |  X |   X    |   X    |      |
-|TESS v4.5 |	     |     |  X  |   X  |  X |   X    |   X    |      |
-
-
-_Note2: All systems and applications are different. Sometimes a
-program will not be found at the right location or the arguments of
-the programs have changed through a new version. In that case - errors
-may show up during data collection, but these will be interpreted as
-non fatal and hopefully the next function will be executed. In case
-the execution stops, open an issue_
 
 ## Limitations
-This script-collection is only meant to run on RedHat/CentOS 5.x or
-6.x. It may run on other Linux distributions, but that is no garantee.
-
+This script requires fio and ioping to be installed on the system and
+made available in the regular PATH
 
 
 ## License
