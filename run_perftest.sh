@@ -81,6 +81,15 @@ errors
 # Set a title for the script
 title "Disk performance IOPS test"
 
+if [ "$USER" != "root" ]
+then
+
+    MSG="This script requires root access, as regular users could be\n\tsubject to limitations applied by the OS"
+    errlvl=1
+    errors
+fi
+
+
 FIO=$( which fio 2>/dev/null )
 
 if ! [ -x "$(command -v ${FIO})" ]
@@ -99,13 +108,41 @@ then
     errors  
 fi
 
+echo "The test directory needs to be situated on the disk/partition"
+echo "that is to be tested. It will be created if non-existent."
+echo -n "Please specific the test-directory [./perftest]: "
+read TESTDIR
+
+DIR=${TESTDIR:-perftest}
+
+if [ ! -d $DIR ]
+then
+    MSG="Creating direcory $TESTDIR failed"
+    mkdir -p $DIR
+    errlvl=$?
+    errors
+fi
+
+
 entry "Random read/write performance"
 echo "Random read/write performance"
-$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test.tmp --filename=fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=75 | tee -a $LogFile
+
+$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=75 | tee -a $LogFile
 
 entry "Running IOPing"
 echo "Running IOPing"
 echo "On a healthy system, variation should be very low" | tee -a $LogFile
-$IOP -c 10 . | tee -a $LogFile
+$IOP -c 10 ${DIR}/ | tee -a $LogFile
+
+# Cleaning up
+MSG="Removing temporary files in $DIR failed"
+rm -f ${DIR}/*
+errlvl=$?
+errors
+
+MSG="Removing temporary directory $DIR failed"
+rmdir ${DIR}
+errlvl=$?
+errors
 
 Unlock $LockFile
