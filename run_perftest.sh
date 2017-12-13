@@ -126,8 +126,32 @@ fi
 
 entry "Random read/write performance"
 echo "Random read/write performance"
+$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=50 | tee -a $LogFile
 
-$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=75 | tee -a $LogFile
+
+entry "Random read performance"
+echo "Random read performance"
+$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=randread | tee -a $LogFile
+
+
+entry "Random write performance"
+echo "Random write performance"
+$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=randwrite | tee -a $LogFile
+
+
+entry "Sequential read/write performance"
+echo "Sequential read/write performance"
+$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=rw --rwmixread=50 | tee -a $LogFile
+
+entry "Sequential read performance"
+echo "Sequential read performance"
+$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=read | tee -a $LogFile
+
+entry "Sequential write performance"
+echo "Sequential write performance"
+$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=write | tee -a $LogFile
+
+
 
 entry "Running IOPing"
 echo "Running IOPing"
@@ -136,7 +160,7 @@ $IOP -c 10 ${DIR}/ | tee -a $LogFile
 
 # Cleaning up
 MSG="Removing temporary files in $DIR failed"
-rm -f ${DIR}/*
+rm -f ${DIR}/fio_test.tmp
 errlvl=$?
 errors
 
