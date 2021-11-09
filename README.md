@@ -1,4 +1,4 @@
-# fieldpack.apm-perftest 0.1-4 by J. Mertin -- joerg.mertin(-AT-)ca.com
+# fieldpack.apm-perftest 0.1-5 by J. Mertin -- joerg.mertin(-AT-)ca.com
 Purpose: Provides a script-set to test performance of actual system to evaluate APM capabilities
 
 # Description
@@ -56,7 +56,7 @@ made available in the regular PATH
 
 ## License
 This field pack is provided under the [Eclipse Public License, Version
-1.0](https://github.com/CA-APM/fieldpack.apm-scripts/blob/master/LICENSE).
+1.0](LICENSE.txt).
 
 ## Support
 This document and associated tools are made available from CA
@@ -85,11 +85,6 @@ Author(s) may attempt to address the issue or question.
 Unless explicitly stated otherwise this field pack is only supported
 on the same platforms as the regular APM Version. See [APM
 Compatibility Guide](http://www.ca.com/us/support/ca-support-online/product-content/status/compatibility-matrix/application-performance-management-compatibility-guide.aspx).
-
-
-### Support URL
-https://github.com/CA-APM/fieldpack.apm-scripts/issues
-
 
 ## Categories
 Database Reporting Server Monitoring

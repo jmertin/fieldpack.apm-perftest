@@ -192,7 +192,7 @@ entry () {
     # Add a space
     space
     MSG="Add entry: $* to $LogFile"
-    echo "=== $* !  $line"  >> $LogFile
+    echo "=== $* !  $line" | tee -a $LogFile
     errlvl=$?
     errors
 }

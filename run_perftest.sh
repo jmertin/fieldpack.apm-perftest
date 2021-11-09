@@ -130,9 +130,18 @@ echo
 entry "Running Kernel: uname -a"
 uname -a | tee -a $LogFile
 
+# Product name
+ProdName=`dmidecode | grep "Product Name" | head -1 | cut -d ':' -f 2`
+# Vendor
+Vendor=`dmidecode | grep Manufacturer | head -1 | cut -d ':' -f 2` 
+
+echo
+entry "Hardware type"
+echo "$ProdName $Vendor" | tee -a $LogFile
+
 echo
 entry "uptime"
-uptime  | tee -a $LogFile
+uptime | tee -a $LogFile
 
 echo
 entry "OS Information"
@@ -156,32 +165,44 @@ entry "File system disk space usage: df -h"
 df -h  | tee -a  $LogFile
 
 echo
-entry "File system inode usage: df -i"
-df -i  | tee -a  $LogFile
+entry "File system mount options"
+mount | tee -a  $LogFile
+
+NAME=`hostname -s`
+
+if [ `echo $NAME | grep -q localhost`]
+then
+    # We have found localhost
+    # System network is badly configured Create our own identifier
+    echo -n "Please provide a system name: "
+    read NAME
+fi
+
+FIOOPT="--name=$NAME --randrepeat=1 --bs=4k --iodepth=64 --size=4G --append-terse --ioengine=libaio --direct=1 --gtod_reduce=1 --rwmixread=50"
 
 echo
 entry "Random read/write performance"
-$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=50 --append-terse | tee -a $LogFile
+$FIO  --filename=${DIR}/fio_test.tmp --readwrite=randrw $FIOOPT | tee -a $LogFile
 
 echo
 entry "Random read performance"
-$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=randread --append-terse | tee -a $LogFile
+$FIO --filename=${DIR}/fio_test.tmp --readwrite=randread $FIOOPT | tee -a $LogFile
 
 echo
 entry "Random write performance"
-$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=randwrite --append-terse | tee -a $LogFile
+$FIO --filename=${DIR}/fio_test.tmp --readwrite=randwrite $FIOOPT | tee -a $LogFile
 
 echo
 entry "Sequential read/write performance"
-$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=rw --rwmixread=50 --append-terse | tee -a $LogFile
+$FIO --filename=${DIR}/fio_test.tmp --readwrite=rw $FIOOPT | tee -a $LogFile
 
 echo
 entry "Sequential read performance" 
-$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=read | tee -a $LogFile
+$FIO --filename=${DIR}/fio_test.tmp --readwrite=read $FIOOPT | tee -a $LogFile
 
 echo
 entry "Sequential write performance"
-$FIO --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=fio_test --filename=${DIR}/fio_test.tmp --bs=4k --iodepth=64 --size=4G --readwrite=write | tee -a $LogFile
+$FIO --filename=${DIR}/fio_test.tmp --readwrite=write $FIOOPT | tee -a $LogFile
 
 echo
 entry "Running IOPing"

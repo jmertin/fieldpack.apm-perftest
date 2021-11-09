@@ -1,0 +1,6 @@
+INFO
+bin
+BIN/*
+*.log
+fio_ioping.tar.gz
+git_wrap..LOCK
